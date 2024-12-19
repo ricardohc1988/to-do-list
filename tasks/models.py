@@ -1,5 +1,7 @@
+from datetime import timezone
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError 
 
 class Task(models.Model):
     PRIORITY_CHOICES = [
@@ -24,3 +26,7 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if self.due_date < timezone.now():
+            raise ValidationError("The due date cannot be in the past.")

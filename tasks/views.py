@@ -17,3 +17,10 @@ class TaskListCreateAPIView(generics.ListCreateAPIView):
         # Asocia la tarea al usuario autenticado
         serializer.save(user=self.request.user)
 
+class TaskRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)
