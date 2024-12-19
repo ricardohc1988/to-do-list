@@ -16,3 +16,4 @@ class TaskListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         # Asocia la tarea al usuario autenticado
         serializer.save(user=self.request.user)
+
