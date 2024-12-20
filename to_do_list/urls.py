@@ -17,9 +17,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="To-Do List API",  # Nombre de la API
+        default_version='v1',  # Versión de la API
+        description="Documentación de la API para gestionar tareas", 
+    ),
+    public=True,  # Configuración de acceso público
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('tasks.urls')),
+    path('api/', include('users.urls')),
     path('api/token/', obtain_auth_token, name='api_token_auth'),
+    # Ruta para Swagger UI
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # Ruta para ReDoc (opcional)
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
